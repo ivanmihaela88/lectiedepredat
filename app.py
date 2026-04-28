@@ -2,157 +2,124 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Lecție WOW Streamlit", page_icon="💻", layout="wide")
+st.set_page_config(page_title="Lecție Streamlit", page_icon="💻")
 
-st.title("💻 Lecție WOW: Aplicație interactivă cu Streamlit")
-st.caption("Clasa a X-a | Informatică")
+st.title("💻 Lecție: Aplicație interactivă cu Streamlit")
+st.caption("Clasa a X-a")
 
-tab1, tab2, tab3, tab4 = st.tabs([
-    "📚 Teorie",
-    "📈 Aplicație interactivă",
-    "🛠️ Exerciții",
-    "🧠 Quiz final"
-])
+# =====================
+# TEORIE
+# =====================
 
-with tab1:
-    st.header("📚 Teorie")
-    st.markdown("""
-    ## Modelul unei aplicații interactive
+st.header("📚 1. Teorie")
 
-    O aplicație interactivă are 3 pași:
+st.markdown("""
+## Cum funcționează o aplicație?
 
-    ### INPUT → PROCESARE → OUTPUT
+### INPUT → PROCESARE → OUTPUT
 
-    - **Input:** utilizatorul introduce valori
-    - **Procesare:** programul face calcule
-    - **Output:** aplicația afișează rezultatul
+- **Input:** utilizatorul introduce valori  
+- **Procesare:** programul calculează  
+- **Output:** afișăm rezultatul  
 
-    În lecția noastră folosim Python și Streamlit.
-    """)
+Exemplu din aplicația noastră:
+""")
 
-    st.code("""
+st.code("""
 a = st.slider("Alege valoarea lui a", -5.0, 5.0, 1.0)
 y = a * x**2 + b * x + c
 st.pyplot(fig)
-""", language="python")
+""")
 
-with tab2:
-    st.header("📈 Aplicație interactivă")
+# =====================
+# APLICAȚIE
+# =====================
 
-    st.markdown("Funcția folosită este: **f(x) = ax² + bx + c**")
+st.header("📈 2. Aplicație interactivă")
 
-    col1, col2, col3 = st.columns(3)
+st.write("Modifică valorile și observă graficul:")
 
-    with col1:
-        a = st.slider("Coeficientul a", -5.0, 5.0, 1.0, 0.5)
+col1, col2, col3 = st.columns(3)
 
-    with col2:
-        b = st.slider("Coeficientul b", -10.0, 10.0, 0.0, 0.5)
+with col1:
+    a = st.slider("a", -5.0, 5.0, 1.0)
 
-    with col3:
-        c = st.slider("Coeficientul c", -10.0, 10.0, 0.0, 0.5)
+with col2:
+    b = st.slider("b", -10.0, 10.0, 0.0)
 
-    if a == 0:
-        st.error("Pentru funcția de gradul al II-lea, a trebuie să fie diferit de 0.")
+with col3:
+    c = st.slider("c", -10.0, 10.0, 0.0)
+
+if a == 0:
+    st.error("a trebuie să fie diferit de 0")
+else:
+    x = np.linspace(-10, 10, 100)
+    y = a*x**2 + b*x + c
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    ax.grid()
+
+    st.pyplot(fig)
+
+    st.success(f"f(x) = {a}x² + {b}x + {c}")
+
+    if a > 0:
+        st.info("Parabola este deschisă în sus")
     else:
-        x = np.linspace(-10, 10, 400)
-        y = a * x**2 + b * x + c
+        st.warning("Parabola este deschisă în jos")
 
-        delta = b**2 - 4*a*c
-        xv = -b / (2*a)
-        yv = a * xv**2 + b * xv + c
+# =====================
+# EXERCIȚII
+# =====================
 
-        fig, ax = plt.subplots()
-        ax.plot(x, y, label="f(x)")
-        ax.scatter([xv], [yv], label="Vârful parabolei")
-        ax.axhline(0, linewidth=1)
-        ax.axvline(0, linewidth=1)
-        ax.grid(True)
-        ax.legend()
+st.header("🛠️ 3. Exerciții")
 
-        st.pyplot(fig)
+st.markdown("""
+### Nivel ușor:
+- schimbă titlul aplicației
+- modifică intervalul slider-ului
 
-        st.success(f"Funcția este: f(x) = {a}x² + {b}x + {c}")
-        st.metric("Delta", f"{delta:.2f}")
-        st.metric("Vârful parabolei", f"V({xv:.2f}, {yv:.2f})")
+### Nivel mediu:
+- afișează valoarea lui Delta
+- adaugă un mesaj pentru a > 0
 
-        if a > 0:
-            st.info("Parabola este deschisă în sus.")
-        else:
-            st.warning("Parabola este deschisă în jos.")
+### Nivel avansat:
+- creează o funcție liniară (f(x)=mx+n)
+""")
 
-with tab3:
-    st.header("🛠️ Exerciții")
+# =====================
+# QUIZ
+# =====================
 
-    st.markdown("""
-    ## Nivel ușor
-    1. Schimbă titlul aplicației.
-    2. Schimbă textul de introducere.
-    3. Modifică intervalul sliderului.
+st.header("🧠 4. Quiz")
 
-    ## Nivel mediu
-    1. Afișează valoarea lui Delta.
-    2. Adaugă mesaj pentru `a > 0`.
-    3. Adaugă mesaj pentru `a < 0`.
+scor = 0
 
-    ## Nivel avansat
-    Creează un meniu pentru:
-    - funcție liniară
-    - funcție de gradul al II-lea
-    """)
+q1 = st.radio(
+    "1. Ce face st.slider()?",
+    ["Afișează o poză", "Permite alegerea unei valori", "Închide aplicația"],
+    index=None
+)
 
-with tab4:
-    st.header("🧠 Quiz final")
+q2 = st.radio(
+    "2. Ce sunt a, b și c?",
+    ["Variabile", "Fișiere", "Pagini web"],
+    index=None
+)
 
-    scor = 0
+q3 = st.radio(
+    "3. Ce face formula?",
+    ["Calculează funcția", "Șterge graficul", "Deschide browserul"],
+    index=None
+)
 
-    q1 = st.radio(
-        "1. Ce face st.slider()?",
-        ["Afișează o poză", "Permite utilizatorului să aleagă o valoare", "Închide aplicația"],
-        index=None
-    )
+if st.button("Verifică"):
+    if q1 == "Permite alegerea unei valori":
+        scor += 1
+    if q2 == "Variabile":
+        scor += 1
+    if q3 == "Calculează funcția":
+        scor += 1
 
-    q2 = st.radio(
-        "2. Ce reprezintă a, b și c în program?",
-        ["Variabile", "Fișiere", "Pagini web"],
-        index=None
-    )
-
-    q3 = st.radio(
-        "3. Ce face linia y = a * x**2 + b * x + c?",
-        ["Calculează valorile funcției", "Șterge graficul", "Deschide browserul"],
-        index=None
-    )
-
-    q4 = st.radio(
-        "4. Ce bibliotecă folosim pentru grafic?",
-        ["matplotlib", "random", "time"],
-        index=None
-    )
-
-    q5 = st.radio(
-        "5. Care este ordinea corectă?",
-        ["Output → Input → Procesare", "Input → Procesare → Output", "Procesare → Output → Input"],
-        index=None
-    )
-
-    if st.button("✅ Verifică răspunsurile"):
-        if q1 == "Permite utilizatorului să aleagă o valoare":
-            scor += 1
-        if q2 == "Variabile":
-            scor += 1
-        if q3 == "Calculează valorile funcției":
-            scor += 1
-        if q4 == "matplotlib":
-            scor += 1
-        if q5 == "Input → Procesare → Output":
-            scor += 1
-
-        st.subheader(f"Scor: {scor}/5")
-
-        if scor == 5:
-            st.success("Excelent! Ai înțeles foarte bine lecția.")
-        elif scor >= 3:
-            st.info("Bine! Mai repetă puțin partea de cod.")
-        else:
-            st.warning("Mai parcurge încă o dată lecția.")
+    st.write(f"Scor: {scor}/3")
