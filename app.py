@@ -54,3 +54,10 @@ if st.button("✅ Verifică răspunsurile"):
         st.info("Bine! Mai repetă puțin partea de cod.")
     else:
         st.warning("Mai parcurge încă o dată lecția.")
+st.sidebar.title("Navigare")
+
+st.sidebar.page_link("app.py", label="🏠 Lecție")
+st.sidebar.page_link("pages/1_📚_Teorie.py", label="📚 Teorie")
+st.sidebar.page_link("pages/2_📈_Aplicatie_interactiva.py", label="📈 Aplicație")
+st.sidebar.page_link("pages/3_🛠️_Exercitii.py", label="🛠️ Exerciții")
+st.sidebar.page_link("pages/4_🧠_Quiz.py", label="🧠 Quiz")
